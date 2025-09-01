@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+ <mapper namespace="com.kmii.mybatis.dao.OrderDao">
+ 
+ 
+ 	<!-- 모든 주문 리스트 가져오기 -->
+ 	<select id="orderListDao" resultType="com.kmii.mybatis.dto.OrderDto">
+ 		SELECT * FROM springdb.order    
+ 	</select>
+ 	
+ 	<!-- 모든 회원 리스트 가져오기 -->
+ 	<select id="userListDao" resultType="com.kmii.mybatis.dto.UserDto">
+ 		SELECT * FROM springdb.usertbl
+ 	</select>
+ 	
+ 	<!-- 특정 아이디 유저 정보 가져오기 -->
+ 	<select id="userSearchDao" resultType="com.kmii.mybatis.dto.UserDto">
+ 		SELECT * FROM springdb.usertbl WHERE userid = #{param1}
+ 	</select>
+ 	
+ 	<!-- 특정 유저 아이디로 유저 세부 정보 가져오기 -->
+ 	<select id="userInfoDao" resultType="com.kmii.mybatis.dto.UserIdInfoDto">
+ 		SELECT u.userid, u.username, i.useraddress, i.userphone
+ 		FROM springdb.usertbl u
+ 		INNER JOIN springdb.userinfo i ON u.userid = i.userid
+ 		WHERE u.userid = #{param1}
+ 	</select>
+ 	
+ 	<!-- user:userinfo 1:1관계 매핑 -->
+ 	<resultMap type="com.kmii.mybatis.dto.UserDto" id="userWithUserInfo">
+ 		<id property="userid" column="userid"/> <!-- user테이블의 기본키 셋팅  property=dto설정이름 column=db설정이름-->
+ 		<result property="username" column="username"/> <!-- user테이블의 나머지 필드 셋팅 -->
+ 		
+ 		<association property="userInfo" javaType="com.kmii.mybatis.dto.UserInfoDto"> <!--  userDto안에 설정한 userInfoDto 이름넣기 -->
+ 			<id property="userid" column="userid"/>
+ 			<result property="useraddress" column="useraddress"/>
+ 			<result property="userphone" column="userphone"/>
+ 		</association>
+ 	</resultMap>
+ 	
+ 	
+ 	<!-- 특정 유저 아이디로 유저 세부 정보 가져오기 -->
+ 	<select id="userInfoMapDao" resultMap="userWithUserInfo">
+ 		SELECT u.userid, u.username, i.useraddress, i.userphone
+ 		FROM springdb.usertbl u
+ 		INNER JOIN springdb.userinfo i ON u.userid = i.userid
+ 		WHERE u.userid = #{param1}
+ 	</select>
+ 
+ </mapper>
