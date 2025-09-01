@@ -42,7 +42,6 @@
  		</association>
  	</resultMap>
  	
- 	
  	<!-- 특정 유저 아이디로 유저 세부 정보 가져오기 -->
  	<select id="userInfoMapDao" resultMap="userWithUserInfo">
  		SELECT u.userid, u.username, i.useraddress, i.userphone
@@ -50,5 +49,33 @@
  		INNER JOIN springdb.userinfo i ON u.userid = i.userid
  		WHERE u.userid = #{param1}
  	</select>
+ 	
+ 	<!--  user:order 1:N관계 매핑 -->
+ 	<resultMap type="com.kmii.mybatis.dto.UserDto" id="userWithOrder">
+ 		<id property="userid" column="userid"/>
+ 		<result property="username" column="username"/>
+ 		
+ 		<!-- order List 매핑 , N관계라 associaction 말고 collection 쓴다-->
+ 		<collection property="orderDtos" ofType="com.kmii.mybatis.dto.OrderDto">
+ 			<id property="orderid" column="orderid"/>
+ 			<result property="ordername" column="ordername" />
+ 			<result property="userid" column="userid" />
+ 		</collection>
+ 	</resultMap>
+ 	
+ 	<select id="userOrderListDao" resultMap="userWithOrder">
+ 		SELECT u.userid, u.username, o.orderid, o.ordername
+ 		FROM springdb.usertbl u
+ 		INNER JOIN springdb.order o ON u.userid = o.userid
+ 		WHERE u.userid = #{param1}
+ 	</select>
+ 	
+ 	
+ 	<select id="AllUserOrderListDao" resultMap="userWithOrder">
+ 		SELECT u.userid, u.username, o.orderid, o.ordername
+ 		FROM springdb.usertbl u
+ 		INNER JOIN springdb.order o ON u.userid = o.userid
+ 	</select>
+ 	
  
  </mapper>

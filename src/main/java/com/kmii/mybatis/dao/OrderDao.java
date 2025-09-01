@@ -24,5 +24,13 @@ public interface OrderDao {
 	// userInfoDao를 spring framework형식으로 수정
 	public UserDto userInfoMapDao(String userid);
 	
+	// 특정 유저의 주문 리스트 가져오기(spring framework형식으로)
+	public UserDto userOrderListDao(String userid); 
+	
+	// 모든 유저의 주문 리스트 가져오기
+	public List<UserDto> AllUserOrderListDao();
+	
+	
+	
 
 }
