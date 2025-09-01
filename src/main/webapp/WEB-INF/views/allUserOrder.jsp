@@ -22,8 +22,9 @@
 				<tr>	
 					<td>${order.orderid }</td>
 					<td>${order.ordername }</td>
+				</tr>
 				</c:forEach>
-			</tr>
+			
 		</table>
 		<hr>
 	</c:forEach>
